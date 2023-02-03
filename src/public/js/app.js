@@ -200,7 +200,6 @@ M.Delay = class {
         }
     }
 }
-
 M.Scope = class {
     constructor(el, r, o) {
         M.Bind(this, ['cb'])
@@ -248,7 +247,6 @@ M.Scope = class {
         this.o.css && M.Cl(this.el, 'r', this.o.css)
     }
 }
-
 
 M.Is = {
     def: t => t !== undefined,
@@ -679,49 +677,6 @@ M.g__ = (p) => {
         }
     }
 
-    class _n {
-        constructor(el) {
-            M.Bind(this, ['open', 'close'])
-            this.id = el.id
-            this.run()
-        }
-
-        static init() {
-            return M.SelectAll('._n').map(
-                (el) => {
-                    return new _n(el)
-                }
-            )
-        }
-
-        run() {
-            this.e('a')
-        }
-
-        open(e) {
-            M.Sp(e);
-            _M.e.s.stop();
-            this.cl('a');
-            if (this.id === 'search') M.Select('#searchInput').focus();
-        }
-
-        close(e) {
-            M.Sp(e);
-            _M.e.s.run();
-            this.cl('r');
-        }
-
-        e(a) {
-            M.E(M.Select("#" + this.id + "-open"), 'click', this.open, a);
-            M.E("." + this.id + "-close", 'click', this.close, a);
-        }
-
-        cl(o) {
-            M.Cl(M.Select("#" + this.id), o, "is-active");
-            M.Cl(M.Select("#overlay"), o, "is-active");
-        }
-    }
-
     class s {
         constructor() {
             M.Bind(this, ["w", "key", "tS", "tM", "onScroll", "loop", "run", "resize", "loop"])
@@ -906,46 +861,7 @@ M.g__ = (p) => {
 
     }
 
-    class _s {
-        constructor() {
-        }
-
-        run() {
-            let b = M.G.class("_s--text"), m = M.L(b)
-            for (let i = 0; i < m; i++) {
-                new M.Scope(
-                    b[i], 1, {
-                        cb: () => {
-                            let mo = new M.Mo({
-                                el: b[i],
-                                p: {y: [105, 0, '%']},
-                                d: .7 * 1000,
-                                e: 'o3'
-                            })
-                            mo.play()
-                        }
-                    }).observe()
-
-            }
-            let c = M.G.class("_s--o"), o = M.L(c)
-            for (let i = 0; i < o; i++) {
-                new M.Scope(c[i], 0.7, {
-                    cb: () => {
-                        let mo = new M.Mo({
-                            el: c[i],
-                            p: {o: [0, 1]},
-                            d: .7 * 1000,
-                            delay: .25 * 1000,
-                            e: 'o3'
-                        })
-                        mo.play()
-                    }
-                }).observe()
-            }
-        }
-    }
-
-    class __s {
+    class P {
         constructor(el) {
             M.Bind(this, ['onScroll'])
             this.el = el
@@ -959,9 +875,9 @@ M.g__ = (p) => {
         }
 
         static init() {
-            M.SelectAll('.__s').map(
+            M.SelectAll('.P').map(
                 (el) => {
-                    return new __s(el)
+                    return new P(el)
                 }
             )
         }
@@ -1003,25 +919,124 @@ M.g__ = (p) => {
 
     }
 
+    class S {
+        constructor() {
+        }
+
+        static init() {
+            let b = M.G.class("_s--text"), m = M.L(b)
+            for (let i = 0; i < m; i++) {
+                new M.Scope(
+                    b[i], 1, {
+                        cb: () => {
+                            let mo = new M.Mo({
+                                el: b[i],
+                                p: {y: [105, 0, '%']},
+                                d: .7 * 1000,
+                                e: 'o3'
+                            })
+                            mo.play()
+                        }
+                    }).observe()
+
+            }
+            let c = M.G.class("_s--o"), o = M.L(c)
+            for (let i = 0; i < o; i++) {
+                new M.Scope(c[i], 0.7, {
+                    cb: () => {
+                        let mo = new M.Mo({
+                            el: c[i],
+                            p: {o: [0, 1]},
+                            d: .7 * 1000,
+                            delay: .25 * 1000,
+                            e: 'o3'
+                        })
+                        mo.play()
+                    }
+                }).observe()
+            }
+        }
+    }
+
+    class T {
+        constructor(el) {
+            M.Bind(this, ['open', 'close'])
+            this.id = el.id
+            this.run()
+        }
+
+        static init() {
+            return M.SelectAll('.T').map(
+                (el) => {
+                    return new T(el)
+                }
+            )
+        }
+
+        run() {
+            this.e('a')
+        }
+
+        open(e) {
+            M.Sp(e);
+            _M.e.s.stop();
+            this.cl('a');
+            if (this.id === 'search') M.Select('#searchInput').focus();
+        }
+
+        close(e) {
+            M.Sp(e);
+            _M.e.s.run();
+            this.cl('r');
+        }
+
+        e(a) {
+            M.E(M.Select("#" + this.id + "-open"), 'click', this.open, a);
+            M.E("." + this.id + "-close", 'click', this.close, a);
+        }
+
+        cl(o) {
+            M.Cl(M.Select("#" + this.id), o, "is-active");
+            M.Cl(M.Select("#overlay"), o, "is-active");
+        }
+    }
+
+
+
+    class gl {
+        constructor() {
+        }
+        init() {
+
+        }
+        run() {
+
+        }
+    }
+
     class b {
         constructor() {
             M.Bind(this, ['on'])
             this.i = new i
             this.l = new l
             this.n = new n
-            this._s = new _s
             this.t = new t
             this.on()
         }
 
         _init() {
             _M.e.s = new s
+            _M.e.gl = new gl
+            _M.E.S =  S.init()
+            _M.E.T =  T.init()
+            _M.E.P  = _D.isM || P.init()
+
         }
 
         init() {
+            this.setHH()
             _M.e.s.init()
-            _n.init()
-            _D.isM || __s.init()
+            _M.e.gl.init()
         }
 
         intro() {
@@ -1031,14 +1046,17 @@ M.g__ = (p) => {
 
         run() {
             _M.e.s.run()
+            _M.e.gl.run()
             this.n.run()
-            this._s.run()
             this.t.run()
 
         }
 
-        _on() {
-            M.E(window, 'load', this.on, 'a')
+        setHH (){
+            let h = M.Select('#header')
+            h = h.offsetHeight
+            M.__('--header-height', h + 'px')
+
         }
 
         on() {

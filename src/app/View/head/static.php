@@ -13,41 +13,47 @@
 </style>
 <script>
     window._M = {
-    delay: 700,
+        delay: 700,
 
-    scroll: {
-        y: 0
-    },
-    config: {
-        serviceWorker: false
-    },
-    route: {
-        "new": {
-            "url": location.pathname,
-            "page": null
+        scroll: {
+            y: 0
         },
-        "old": {
-            "url": false,
-            "page": false
+        config: {
+            serviceWorker: false
+        },
+        route: {
+            "new": {
+                "url": location.pathname,
+                "page": null
+            },
+            "old": {
+                "url": false,
+                "page": false
+            }
+        },
+        e: {
+            s: null,
+            b: null,
+            gl: null
+        },
+        E: {
+            P: null,
+            S : null,
+            T : null
         }
-    },
-    e: {
-        s: null,
-        b: null
+        , was: []
     }
-    , was: []
-}
     if ('serviceWorker' in navigator) {
-            _M.config.serviceWorker && navigator.serviceWorker.register('/sw.js');
+        _M.config.serviceWorker && navigator.serviceWorker.register('/sw.js');
     }
-    !function() {
-                "use strict";
-                const t = document;
-                const s = t.createElement("script");
-                s.src = "/js/app.js"
-                t.onreadystatechange = e=>{
-                    "complete" === t.readyState && t.body.appendChild(s)
-                }
+    !function () {
+        "use strict";
+        const t = document;
+        const s = t.createElement("script");
+        s.src = "/js/app.js"
+        t.onreadystatechange = e => {
+            "complete" === t.readyState && t.body.appendChild(s)
+        }
     }();
-        
+
 </script>

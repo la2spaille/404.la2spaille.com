@@ -5,6 +5,7 @@
   outline: none;
   box-sizing: border-box;
   background: none;
+  user-select: none;
 
   &::selection {
     background: var(--primary);
