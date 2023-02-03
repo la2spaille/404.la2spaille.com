@@ -7,7 +7,7 @@
                         <span>404</span>
                     </h1>
                     <p class="f-hidden f-family_primary">
-                        <span>Sorry but the page that you are looking for is unvailable</span>
+                        <span>Sorry but the page you are looking for is unvailable</span>
                     </p>
                 </div>
             </div>

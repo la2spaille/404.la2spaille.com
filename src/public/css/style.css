@@ -503,6 +503,7 @@ canvas {
   pointer-events: none;
   position: fixed;
   top: 0;
+  z-index: 740;
 }
 
 body, html {

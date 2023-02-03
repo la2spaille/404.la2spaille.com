@@ -1029,6 +1029,9 @@ M.g__ = (p) => {
                 xy = M.XY;
             c.fillStyle = '#181719';
             c.fillRect(0, 0, xy.w, xy.h);
+            c.fillStyle = '#FCFCFC';
+            c.font = "600 24px/1.33  Satoshi-Variable";
+            c.fillText("404 NOT FOUND", 32, 56);
             this.e('a')
         }
 
@@ -1042,8 +1045,8 @@ M.g__ = (p) => {
 
         mM(e) {
             const t = _M
-            t.mouse.x = e.clientX - 150 / 2
-            t.mouse.y = e.clientY - 150 / 2
+            t.mouse.x = e.clientX
+            t.mouse.y = e.clientY
             this.cb(e)
         }
 
@@ -1053,12 +1056,23 @@ M.g__ = (p) => {
             c.clearRect(0, 0, xy.w, xy.h)
             c.fillStyle = '#181719';
             c.fillRect(0, 0, xy.w, xy.h)
+            c.fillStyle = '#FCFCFC';
+            c.font = "600 24px  Satoshi-Variable";
+            c.fillText("404 NOT FOUND", 32, 60);
             const _ = _M.mouse
             this.t.x = M.Lerp(this.t.x, _.x,0.1)
             this.t.y = M.Lerp(this.t.y, _.y,0.1)
-            c.clearRect(this.t.x, this.t.y, 150, 150)
+            this.clearCircle(c,this.t.x,this.t.y,150)
             const d = Math.abs(this.t.x - _M.mouse.x)
             if (d < 0.5) this.r.stop()
+        }
+        clearCircle(context,x,y,radius) {
+            context.save();
+            context.beginPath();
+            context.arc(x, y, radius, 0, 2*Math.PI, true);
+            context.clip();
+            context.clearRect(x-radius,y-radius,radius*2,radius*2);
+            context.restore();
         }
 
         cb() {
