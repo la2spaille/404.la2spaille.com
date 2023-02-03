@@ -1025,14 +1025,53 @@ M.g__ = (p) => {
         init() {
             this.c.width = M.XY.w
             this.c.height = M.XY.h
-            let c = this.ctx,
-                xy = M.XY;
-            c.fillStyle = '#181719';
-            c.fillRect(0, 0, xy.w, xy.h);
-            c.fillStyle = '#FCFCFC';
-            c.font = "600 24px/1.33  Satoshi-Variable";
-            c.fillText("404 NOT FOUND", 32, 56);
+            this.drawBg()
+            this.drawText()
             this.e('a')
+        }
+
+        loop() {
+            this.clear()
+            this.drawBg()
+            this.drawText()
+            this.drawTorch(150)
+
+
+            const d = Math.abs(this.t.x - _M.mouse.x)
+            if (d < 0.5) this.r.stop()
+        }
+
+        clear() {
+            const xy = M.XY
+            this.ctx.fillRect(0, 0, xy.w, xy.h)
+        }
+
+        clearCircle(ctx, x, y, r) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, 2 * Math.PI, true);
+            ctx.clip();
+            ctx.clearRect(x - r, y - r, 2 * r, 2 * r);
+            ctx.restore();
+        }
+
+        drawBg(ctx = this.ctx) {
+            const xy = M.XY
+            ctx.fillStyle = '#181719';
+            ctx.fillRect(0, 0, xy.w, xy.h);
+        }
+
+        drawText(ctx = this.ctx) {
+            ctx.fillStyle = '#FCFCFC';
+            ctx.font = "600 24px/1.33  Satoshi-Variable";
+            ctx.fillText("404 NOT FOUND", 32, 56);
+        }
+
+        drawTorch(r, ctx = this.ctx) {
+            const _ = _M.mouse
+            this.t.x = M.Lerp(this.t.x, _.x, 0.1)
+            this.t.y = M.Lerp(this.t.y, _.y, 0.1)
+            this.clearCircle(ctx, this.t.x, this.t.y, r)
         }
 
         run() {
@@ -1048,31 +1087,6 @@ M.g__ = (p) => {
             t.mouse.x = e.clientX
             t.mouse.y = e.clientY
             this.cb(e)
-        }
-
-        loop() {
-            let c = this.ctx,
-                xy = M.XY;
-            c.clearRect(0, 0, xy.w, xy.h)
-            c.fillStyle = '#181719';
-            c.fillRect(0, 0, xy.w, xy.h)
-            c.fillStyle = '#FCFCFC';
-            c.font = "600 24px  Satoshi-Variable";
-            c.fillText("404 NOT FOUND", 32, 60);
-            const _ = _M.mouse
-            this.t.x = M.Lerp(this.t.x, _.x,0.1)
-            this.t.y = M.Lerp(this.t.y, _.y,0.1)
-            this.clearCircle(c,this.t.x,this.t.y,150)
-            const d = Math.abs(this.t.x - _M.mouse.x)
-            if (d < 0.5) this.r.stop()
-        }
-        clearCircle(context,x,y,radius) {
-            context.save();
-            context.beginPath();
-            context.arc(x, y, radius, 0, 2*Math.PI, true);
-            context.clip();
-            context.clearRect(x-radius,y-radius,radius*2,radius*2);
-            context.restore();
         }
 
         cb() {
