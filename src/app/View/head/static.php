@@ -18,6 +18,10 @@
         scroll: {
             y: 0
         },
+        mouse: {
+            x: 0,
+            y: 0
+        },
         config: {
             serviceWorker: false
         },
@@ -38,8 +42,8 @@
         },
         E: {
             P: null,
-            S : null,
-            T : null
+            S: null,
+            T: null
         }
         , was: []
     }

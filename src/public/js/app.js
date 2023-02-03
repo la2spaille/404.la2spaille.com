@@ -277,7 +277,10 @@ M.XY = {
             this.accX = this.offsetLeft(el.offsetParent)
         }
         return el.offsetLeft + this.accX
-    }
+    },
+    w: innerWidth,
+    h: innerHeight
+
 }
 M.G = {
     root: r => M.Is.def(r) ? r : document,
@@ -346,8 +349,8 @@ M.Select = el => {
     return c[0]
 }
 M.SelectAll = el => {
-    if (!M.Is.str(el))  {
-        if(M.Is.arr(el)) {
+    if (!M.Is.str(el)) {
+        if (M.Is.arr(el)) {
             return el
         } else {
             return [el]
@@ -376,7 +379,7 @@ M.D = (t, r) => {
     let s = M.Select(t).style
     s['display'] = r
 }
-M.S = (t,p,r) => {
+M.S = (t, p, r) => {
     let s = M.Select(t).style
     s[p] = r
 
@@ -407,9 +410,9 @@ M.Cl = (el, action, css) => {
     }
 }
 M.Cr = el => document.createElement(el)
-M.Tg = (t,i=false) => i ?t.currentTarget: t.target,
-M.Pn = t => t.parentNode
-M.C = t=> t.childrenM.Sp = t => t.stopPropagation()
+M.Tg = (t, i = false) => i ? t.currentTarget : t.target,
+    M.Pn = t => t.parentNode
+M.C = t => t.childrenM.Sp = t => t.stopPropagation()
 M.In = t => location.href.includes(t)
 M.__ = (p, v, t) => {
     const el = t ? M.Select(t) : document.documentElement
@@ -1001,17 +1004,67 @@ M.g__ = (p) => {
         }
     }
 
-
-
     class gl {
         constructor() {
+            M.Bind(this, ['mM', 'loop'])
+            _M.mouse = {
+                x: 0,
+                y: 0,
+                deltaX: 0,
+                deltaY: 0
+            }
+            this.c = M.Select('#gl')
+            this.t = {
+                x: 0,
+                y: 0
+            }
+            this.ctx = this.c.getContext('2d')
+            this.r = new M.Raf(this.loop)
         }
+
         init() {
-
+            this.c.width = M.XY.w
+            this.c.height = M.XY.h
+            let c = this.ctx,
+                xy = M.XY;
+            c.fillStyle = '#181719';
+            c.fillRect(0, 0, xy.w, xy.h);
+            this.e('a')
         }
+
         run() {
-
+            this.e('a')
         }
+
+        e(o) {
+            M.E(window, 'mousemove', this.mM, o)
+        }
+
+        mM(e) {
+            const t = _M
+            t.mouse.x = e.clientX - 150 / 2
+            t.mouse.y = e.clientY - 150 / 2
+            this.cb(e)
+        }
+
+        loop() {
+            let c = this.ctx,
+                xy = M.XY;
+            c.clearRect(0, 0, xy.w, xy.h)
+            c.fillStyle = '#181719';
+            c.fillRect(0, 0, xy.w, xy.h)
+            const _ = _M.mouse
+            this.t.x = M.Lerp(this.t.x, _.x,0.1)
+            this.t.y = M.Lerp(this.t.y, _.y,0.1)
+            c.clearRect(this.t.x, this.t.y, 150, 150)
+            const d = Math.abs(this.t.x - _M.mouse.x)
+            if (d < 0.5) this.r.stop()
+        }
+
+        cb() {
+            this.r.on || this.r.run()
+        }
+
     }
 
     class b {
@@ -1027,9 +1080,9 @@ M.g__ = (p) => {
         _init() {
             _M.e.s = new s
             _M.e.gl = new gl
-            _M.E.S =  S.init()
-            _M.E.T =  T.init()
-            _M.E.P  = _D.isM || P.init()
+            _M.E.S = S.init()
+            _M.E.T = T.init()
+            _M.E.P = _D.isM || P.init()
 
         }
 
@@ -1045,14 +1098,14 @@ M.g__ = (p) => {
         }
 
         run() {
-            _M.e.s.run()
+            _M.e.s.stop()
             _M.e.gl.run()
             this.n.run()
             this.t.run()
 
         }
 
-        setHH (){
+        setHH() {
             let h = M.Select('#header')
             h = h.offsetHeight
             M.__('--header-height', h + 'px')

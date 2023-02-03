@@ -499,6 +499,12 @@ button {
   display: flex;
 }
 
+canvas {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+}
+
 body, html {
   scrollbar-width: thin;
   scrollbar-color: var(--gsw) var(--bg);
@@ -713,10 +719,6 @@ h1 {
 section .l-rl {
   padding: 0 32px;
 }
-section .l-tb {
-  padding: 128px 0 64px;
-}
-
 .p-home .w-text {
   position: fixed;
   top: 50%;

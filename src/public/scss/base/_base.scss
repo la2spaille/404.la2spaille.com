@@ -12,9 +12,11 @@
     color: var(--light)
   }
 }
+
 *:focus-visible {
   outline: auto;
 }
+
 ::after, ::before {
   box-sizing: border-box;
 }
@@ -57,16 +59,24 @@ button {
   display: flex;
 }
 
-body,html {
+canvas {
+  pointer-events: none;
+  position: fixed;
+  top:0;
+}
+
+body, html {
   scrollbar-width: thin;
   scrollbar-color: var(--gsw) var(--bg);
   min-height: 100%;
   height: auto;
 }
+
 html {
   -webkit-text-size-adjust: none;
   -webkit-font-smoothing: antialiased;
   scroll-behavior: initial;
+
   &.s {
     overflow: hidden;
   }
