@@ -2,19 +2,13 @@
     <section>
         <div class="l-rl">
             <div class="l-tb">
-                <div class="w-api">
-                    <h1 class="f-36px">
-                        <span><?= $this->data->title ?></span>
-                    </h1>
-                </div>
                 <div class="w-text">
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet ipsam minus perferendis provident? Accusantium, ducimus!
+                    <h1 class="f-hidden f-family_primary">
+                        <span>404</span>
+                    </h1>
+                    <p class="f-hidden f-family_primary f-center">
+                        <span>Sorry but the page that you are looking for is unvailable</span>
                     </p>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque consectetur, corporis deleniti dignissimos doloremque dolorum expedita fuga, incidunt iste iure laborum nihil nisi quasi quibusdam quo quod ratione repellendus sapiente totam voluptates? A asperiores eaque impedit quo repellendus. Architecto autem, cum dolorem illo libero magni molestiae odio officiis reprehenderit sunt!
-                    </p>
-
                 </div>
             </div>
         </div>

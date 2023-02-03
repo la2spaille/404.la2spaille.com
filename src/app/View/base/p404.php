@@ -9,26 +9,14 @@
 <link rel="stylesheet" href="/css/style.css">
 <style>
     @font-face {
-  font-family: "NewTitle-Variable";
-  src: url("/fonts/NewTitle-Variable.woff2") format("woff2"), url("/fonts/NewTitle-Variable.woff") format("woff"), url("/fonts/NewTitle-Variable.ttf") format("truetype");
-  font-weight: 200 700;
-  font-display: swap;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Amulya-Variable";
-  src: url("/fonts/Amulya-Variable.woff2") format("woff2"), url("/fonts/Amulya-Variable.woff") format("woff"), url("/fonts/Amulya-Variable.ttf") format("truetype");
-  font-weight: 300 700;
-  font-display: swap;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Amulya-VariableItalic";
-  src: url("/fonts/Amulya-VariableItalic.woff2") format("woff2"), url("/fonts/Amulya-VariableItalic.woff") format("woff"), url("/fonts/Amulya-VariableItalic.ttf") format("truetype");
-  font-weight: 300 700;
-  font-display: swap;
-  font-style: italic;
-}
+        font-family: 'Satoshi-Variable';
+        src: url('/fonts/satoshi/Satoshi-Variable.woff2') format('woff2'),
+        url('/fonts/satoshi/Satoshi-Variable.woff') format('woff'),
+        url('/fonts/satoshi/Satoshi-Variable.ttf') format('truetype');
+        font-weight: 300 900;
+        font-display: swap;
+        font-style: normal;
+    }
 </style>
 </head>
 <body>

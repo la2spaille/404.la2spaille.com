@@ -7,3 +7,18 @@ h1 {
     margin: 8px 0;
   }
 }
+.f-hidden {
+  &.c-icon::after {
+    transition: .5s var(--ease-o3)
+  }
+
+}
+.f-center {
+  text-align: center;
+}
+
+._s--text {
+  transform: translateY(105%);
+
+}
+

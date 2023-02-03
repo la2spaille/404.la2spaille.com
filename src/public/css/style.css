@@ -1,21 +1,20 @@
 :root {
   /* color */
   --gsw:#26282a;
-  --primary: var(--gsw);
-  --secondary: #FCFCFC;
+  --primary: var(--light);
+  --secondary: #F2F2F2;
   --light:#FCFCFC;
   --dark:#181719;
   --l-grey:#F2EFE9;
   --grey: #798086;
-  --bg: #F2F2F2;
+  --bg: var(--dark);
   /* icon */
   --icon-font: "Material Symbols Outlined";
   --icon-font-size:20px;
   /* font-family */
-  --font-family-primary:"NewTitle-Variable";
-  --font-family-secondary:"Amulya-Variable";
-  --font-family-secondary-italic:"Amulya-VariableItalic";
-  --font-family-logo: "NewTitle-Variable";
+  --font-family-primary:"Satoshi-Variable";
+  --font-family-secondary:"Satoshi-Variable";
+  --font-family-logo: "Satoshi-Variable";
   /* utils */
   --min-height:100vh;
   --header-height: 90px;
@@ -91,11 +90,6 @@
 
 .f-family_secondary {
   font-family: var(--font-family-secondary);
-  transition: color 0.7s ease;
-}
-
-.f-family_secondary-italic {
-  font-family: var(--font-family-secondary-italic);
   transition: color 0.7s ease;
 }
 
@@ -449,7 +443,6 @@
   font-weight: 700;
 }
 
-
 * {
   margin: 0;
   padding: 0;
@@ -704,11 +697,33 @@ h1 {
   margin: 8px 0;
 }
 
+.f-hidden.c-icon::after {
+  transition: 0.5s var(--ease-o3);
+}
+
+.f-center {
+  text-align: center;
+}
+
+._s--text {
+  transform: translateY(105%);
+}
+
 section .l-rl {
   padding: 0 32px;
 }
 section .l-tb {
   padding: 128px 0 64px;
+}
+
+.p-home .w-text {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.p-home .w-text h1 span {
+  font-size: clamp(128px, 36vw, 36vw);
 }
 
 /*# sourceMappingURL=style.css.map */

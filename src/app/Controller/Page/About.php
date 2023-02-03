@@ -15,15 +15,14 @@ class About extends Controller
         ------------------------------------*/
 
         $this->data->title = 'About';
-        $this->data->body = Api::get();
 
         /*------------------------------------
             HEAD
         ------------------------------------*/
 
         // SEO
-        $this->head['title'] = 'About – La2spaille 🇨🇲';
-        $this->head['description'] = "La2spaille's boilerplate";
+        $this->head['title'] = 'About | Error — 404 Not Found';
+        $this->head['description'] = "concours #4 : Créer et coder une page 404";
         $this->head['opengraph'] = '/og/index.png';
 
         // Robots
