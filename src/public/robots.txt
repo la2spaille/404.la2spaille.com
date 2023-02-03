@@ -1,0 +1,5 @@
+Sitemap: https://______________________/sitemap.xml
+User-Agent: *
+Disallow: /app/
+Disallow: /engine/
+Disallow: /vendor/
