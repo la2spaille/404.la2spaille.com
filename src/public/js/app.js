@@ -247,7 +247,15 @@ M.Scope = class {
         this.o.css && M.Cl(this.el, 'r', this.o.css)
     }
 }
+M.W = class {
+    static get w() {
+        return innerWidth
+    }
 
+    static get h() {
+        return innerHeight
+    }
+}
 M.Is = {
     def: t => t !== undefined,
     und: t => t === undefined,
@@ -277,9 +285,7 @@ M.XY = {
             this.accX = this.offsetLeft(el.offsetParent)
         }
         return el.offsetLeft + this.accX
-    },
-    w: innerWidth,
-    h: innerHeight
+    }
 
 }
 M.G = {
@@ -1006,7 +1012,7 @@ M.g__ = (p) => {
 
     class gl {
         constructor() {
-            M.Bind(this, ['mM', 'loop'])
+            M.Bind(this, ['mM', 'loop', 'init'])
             _M.mouse = {
                 x: 0,
                 y: 0,
@@ -1015,19 +1021,24 @@ M.g__ = (p) => {
             }
             this.c = M.Select('#gl')
             this.t = {
-                x: 0,
-                y: 0
+                x: M.W.w / 2,
+                y: M.W.h / 2
             }
             this.ctx = this.c.getContext('2d')
             this.r = new M.Raf(this.loop)
+            this._e()
+
         }
 
         init() {
-            this.c.width = M.XY.w
-            this.c.height = M.XY.h
-            this.drawBg()
-            this.drawText()
-            this.e('a')
+            requestAnimationFrame(() => {
+
+                this.c.width = M.W.w
+                this.c.height = M.W.h
+                this.drawBg()
+                this.drawText()
+                this.drawLight()
+            })
         }
 
         loop() {
@@ -1042,7 +1053,7 @@ M.g__ = (p) => {
         }
 
         clear() {
-            const xy = M.XY
+            const xy = M.W
             this.ctx.fillRect(0, 0, xy.w, xy.h)
         }
 
@@ -1056,7 +1067,7 @@ M.g__ = (p) => {
         }
 
         drawBg(ctx = this.ctx) {
-            const xy = M.XY
+            const xy = M.W
             ctx.fillStyle = '#181719';
             ctx.fillRect(0, 0, xy.w, xy.h);
         }
@@ -1067,15 +1078,100 @@ M.g__ = (p) => {
             ctx.fillText("404 NOT FOUND", 32, 56);
         }
 
+        drawCircleShadow(r, ctx = this.ctx) {
+            const w = 2
+            ctx.lineWidth = w
+
+        }
+
         drawTorch(r, ctx = this.ctx) {
             const _ = _M.mouse
             this.t.x = M.Lerp(this.t.x, _.x, 0.1)
             this.t.y = M.Lerp(this.t.y, _.y, 0.1)
             this.clearCircle(ctx, this.t.x, this.t.y, r)
+
+
+        }
+
+        drawLightShadow(ctx = this.ctx) {
+            const xy = M.W,
+                w = xy.w,
+                f = 30
+            this.drawLight(w + f, -f, -w * 0.95, xy.w * 0.55)
+            ctx.lineWidth = 5
+
+            ctx.beginPath()
+            ctx.strokeStyle = "rgba(24,23,25,0.5)"
+            ctx.moveTo(w - 2.5 + f, -f)
+            ctx.lineTo(xy.w * 0.55 - 2.5, xy.h)
+            ctx.stroke()
+
+            ctx.beginPath()
+            ctx.strokeStyle = "rgba(24,23,25,0.25)"
+            ctx.moveTo(w - 7.5 + f, -f)
+            ctx.lineTo(xy.w * 0.55 - 7.5, xy.h)
+            ctx.stroke()
+
+            ctx.beginPath()
+            ctx.strokeStyle = "rgba(24,23,25,0.15)"
+            ctx.moveTo(w - 12.5 + f, -f)
+            ctx.lineTo(xy.w * 0.55 - 12.5, xy.h)
+            ctx.stroke()
+
+            ctx.beginPath()
+            ctx.strokeStyle = "rgba(24,23,25,0.05)"
+            ctx.moveTo(w - 17.5 + f, -f)
+            ctx.lineTo(xy.w * 0.55 - 17.5, xy.h)
+            ctx.stroke()
+
+            ////////////////
+
+            ctx.beginPath()
+            ctx.strokeStyle = "rgba(24,23,25,0.5)"
+            ctx.moveTo(w + 2.5 + f, -f)
+            ctx.lineTo(-w * 0.95 + 2.5, xy.h)
+            ctx.stroke()
+
+            ctx.beginPath()
+            ctx.strokeStyle = "rgba(24,23,25,0.25)"
+            ctx.moveTo(w + 17.5 + f, -f)
+            ctx.lineTo(-w * 0.95 + 17.5, xy.h)
+            ctx.stroke()
+
+            ctx.beginPath()
+            ctx.strokeStyle = "rgba(24,23,25,0.15)"
+            ctx.moveTo(w + 32.5 + f, -f)
+            ctx.lineTo(-w * 0.95 + 32.5, xy.h)
+            ctx.stroke()
+
+            ctx.beginPath()
+            ctx.strokeStyle = "rgba(24,23,25,0.05)"
+            ctx.moveTo(w + 47.5 + f, -f)
+            ctx.lineTo(-w * 0.95 + 47.5, xy.h)
+            ctx.stroke()
+
+        }
+
+        drawLight(s1 = M.W.w, s2=0, x1=-M.W.w * 0.95, x2=M.W.w * 0.55, ctx = this.ctx) {
+            const xy = M.W
+            ctx.save()
+            ctx.beginPath()
+            ctx.moveTo(s1, s2)
+            ctx.lineTo(x2, xy.h)
+            ctx.lineTo(x1, xy.h)
+            ctx.lineTo(s1, s2)
+            ctx.clip()
+            ctx.clearRect(0, 0, xy.w, xy.h)
+            ctx.restore()
         }
 
         run() {
             this.e('a')
+        }
+
+        _e() {
+            M.E(window, 'resize', this.init, 'a')
+
         }
 
         e(o) {
