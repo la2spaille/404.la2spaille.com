@@ -401,7 +401,7 @@ M.Sp = t => t.stopPropagation()
                 T
                     .add({
                         el: '',
-                        delay: 500,
+                        delay: 800,
                         cb: () => {
                             this.loop()
                             this.run()
