@@ -468,14 +468,23 @@ M.Sp = t => t.stopPropagation()
             ctx.restore();
         }
 
-        drawLight(s1 = M.W.w, s2 = 0, x1 = -M.W.w * 0.95, x2 = M.W.w * 0.55, ctx = this.ctx) {
-            const xy = M.W
+        drawLight(ctx = this.ctx) {
+            let e = M.Select('.w-text'),
+                gbcr = e.getBoundingClientRect(),
+                r = gbcr.right,
+                b = gbcr.bottom ,
+                t = gbcr.top + 50,
+                l = gbcr.left,
+                xy = M.W,
+                s1 = xy.w,
+                x1 = -(xy.h - (t / (s1 - l)) * s1) / (t / (s1 - l)),
+                x2 = -(xy.h - (b / (s1 - r)) * s1) / (b / (s1 - r))
             ctx.save()
             ctx.beginPath()
-            ctx.moveTo(s1, s2)
-            ctx.lineTo(x2, xy.h)
+            ctx.moveTo(s1, 0)
             ctx.lineTo(x1, xy.h)
-            ctx.lineTo(s1, s2)
+            ctx.lineTo(x2, xy.h)
+            ctx.lineTo(s1, 0)
             ctx.clip()
             ctx.clearRect(0, 0, xy.w, xy.h)
             ctx.restore()
@@ -489,7 +498,7 @@ M.Sp = t => t.stopPropagation()
         }
 
         tM(e) {
-          M.PD(e);
+            M.PD(e);
             const t = _M.mouse
             let T = (e.targetTouches) ? e.targetTouches[0] : e,
                 d = T.pageY > M.W.h - this.r * 0.5 ? this.r * 0.5 : this.r * 1.75
@@ -508,7 +517,7 @@ M.Sp = t => t.stopPropagation()
 
         e(o) {
             M.E(window, 'mousemove', this.mM, o)
-            _D.isM && M.E(document.body, "touchmove", this.tM, o,{passive:false})
+            _D.isM && M.E(document.body, "touchmove", this.tM, o, {passive: false})
         }
 
         run() {
