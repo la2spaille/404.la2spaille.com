@@ -517,7 +517,7 @@ M.Sp = t => t.stopPropagation()
 
         e(o) {
             M.E(window, 'mousemove', this.mM, o)
-            _D.isM && M.E(document.body, "touchmove", this.tM, o, {passive: false})
+            _D.isM && M.E(window, "touchmove", this.tM, o, {passive: false})
         }
 
         run() {
