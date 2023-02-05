@@ -407,7 +407,6 @@ M.Sp = t => t.stopPropagation()
                             this.run()
                             M.Cl('.lamp', 'a', 'is-rm')
                             M.Cl('.spider_web', 'r', 'is-hidden')
-                            M.Cl('#footer', 'r', 'is-hidden')
 
                         }
                     })
