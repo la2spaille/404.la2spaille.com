@@ -489,6 +489,7 @@ M.Sp = t => t.stopPropagation()
         }
 
         tM(e) {
+          M.PD(e);
             const t = _M.mouse
             let T = (e.targetTouches) ? e.targetTouches[0] : e,
                 d = T.pageY > M.W.h - this.r * 0.5 ? this.r * 0.5 : this.r * 1.75
