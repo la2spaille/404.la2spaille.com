@@ -6,11 +6,22 @@
   bottom: 0;
   z-index: 820;
   background: var(--dark);
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.5s ease;
   pointer-events: none;
+
   &.is-active {
-    pointer-events: auto;
-    opacity: 0.5;
+    .c-logo{
+      opacity: 1;
+    }
+  }
+  &.is-hidden {
+    opacity: 0;
+  }
+
+  .c-logo {
+    transition: opacity 0.5s ease;
+    margin: 32px;
+    opacity: 0;
   }
 }

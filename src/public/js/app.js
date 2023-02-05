@@ -446,8 +446,6 @@ M.g__ = (p) => {
                     cb: () => M.Cl('.m-intro', 'r', 'm-intro')
                 })
                 .play()
-
-
         }
 
     }
@@ -1012,16 +1010,10 @@ M.g__ = (p) => {
 
     class gl {
         constructor() {
-            M.Bind(this, ['mM', 'loop', 'init'])
-            _M.mouse = {
-                x: 0,
-                y: 0,
-                deltaX: 0,
-                deltaY: 0
-            }
+            M.Bind(this, ['mM', 'loop', 'onResize'])
             this.c = M.Select('#gl')
             this.t = {
-                x: M.W.w / 2,
+                x: M.W.w /2,
                 y: M.W.h / 2
             }
             this.ctx = this.c.getContext('2d')
@@ -1030,15 +1022,94 @@ M.g__ = (p) => {
 
         }
 
-        init() {
+        onResize() {
             requestAnimationFrame(() => {
-
                 this.c.width = M.W.w
                 this.c.height = M.W.h
                 this.drawBg()
                 this.drawText()
-                this.drawLight()
             })
+        }
+
+        init() {
+            this.c.width = M.W.w
+            this.c.height = M.W.h
+            this.drawBg()
+            this.drawText()
+            this.drawLight()
+
+        }
+
+        intro() {
+            new M.Delay(1500,()=> {
+                M.Cl('#overlay','a','is-active')
+                new M.TL()
+                    .add({
+                        el: '',
+                        delay: 700,
+                        cb: () => {
+                            M.Cl('#overlay','a','is-hidden')
+                        }
+                    })
+                    .add({
+                        el: '',
+                        delay: 1000,
+                        cb: () => {
+                            M.Cl('#overlay','r','is-hidden')
+
+                        }
+                    })
+                    .add({
+                        el: '',
+                        delay: 500,
+                        cb: () => {
+                            M.Cl('#overlay','a','is-hidden')
+                        }
+                    })
+                    .add({
+                        el: '',
+                        delay: 500,
+                        cb: () => {
+                            M.Cl('#overlay','r','is-hidden')
+
+                        }
+                    })
+                    .add({
+                        el: '',
+                        delay: 1000,
+                        cb: () => {
+                            M.Cl('#overlay','a','is-hidden')
+
+                        }
+                    })
+                    .add({
+                        el: '',
+                        delay: 1000,
+                        cb: () => {
+                            M.Cl('#overlay','r','is-hidden')
+
+                        }
+                    })
+                    .add({
+                        el: '',
+                        delay: 500,
+                        cb: () => {
+                            this.loop()
+                            this.run()
+
+                        }
+                    })
+                    .add({
+                        el: '',
+                        delay: 1000,
+                        cb: () => {
+                            M.Cl('#overlay','a','is-hidden')
+                            console.log('hey')
+
+                        }
+                    })
+                    .play()
+            }).run()
         }
 
         loop() {
@@ -1046,10 +1117,8 @@ M.g__ = (p) => {
             this.drawBg()
             this.drawText()
             this.drawTorch(150)
-
-
             const d = Math.abs(this.t.x - _M.mouse.x)
-            if (d < 0.5) this.r.stop()
+            if (d < 0.5 && this.r.on) this.r.stop()
         }
 
         clear() {
@@ -1078,12 +1147,6 @@ M.g__ = (p) => {
             ctx.fillText("404 NOT FOUND", 32, 56);
         }
 
-        drawCircleShadow(r, ctx = this.ctx) {
-            const w = 2
-            ctx.lineWidth = w
-
-        }
-
         drawTorch(r, ctx = this.ctx) {
             const _ = _M.mouse
             this.t.x = M.Lerp(this.t.x, _.x, 0.1)
@@ -1093,66 +1156,8 @@ M.g__ = (p) => {
 
         }
 
-        drawLightShadow(ctx = this.ctx) {
-            const xy = M.W,
-                w = xy.w,
-                f = 30
-            this.drawLight(w + f, -f, -w * 0.95, xy.w * 0.55)
-            ctx.lineWidth = 5
 
-            ctx.beginPath()
-            ctx.strokeStyle = "rgba(24,23,25,0.5)"
-            ctx.moveTo(w - 2.5 + f, -f)
-            ctx.lineTo(xy.w * 0.55 - 2.5, xy.h)
-            ctx.stroke()
-
-            ctx.beginPath()
-            ctx.strokeStyle = "rgba(24,23,25,0.25)"
-            ctx.moveTo(w - 7.5 + f, -f)
-            ctx.lineTo(xy.w * 0.55 - 7.5, xy.h)
-            ctx.stroke()
-
-            ctx.beginPath()
-            ctx.strokeStyle = "rgba(24,23,25,0.15)"
-            ctx.moveTo(w - 12.5 + f, -f)
-            ctx.lineTo(xy.w * 0.55 - 12.5, xy.h)
-            ctx.stroke()
-
-            ctx.beginPath()
-            ctx.strokeStyle = "rgba(24,23,25,0.05)"
-            ctx.moveTo(w - 17.5 + f, -f)
-            ctx.lineTo(xy.w * 0.55 - 17.5, xy.h)
-            ctx.stroke()
-
-            ////////////////
-
-            ctx.beginPath()
-            ctx.strokeStyle = "rgba(24,23,25,0.5)"
-            ctx.moveTo(w + 2.5 + f, -f)
-            ctx.lineTo(-w * 0.95 + 2.5, xy.h)
-            ctx.stroke()
-
-            ctx.beginPath()
-            ctx.strokeStyle = "rgba(24,23,25,0.25)"
-            ctx.moveTo(w + 17.5 + f, -f)
-            ctx.lineTo(-w * 0.95 + 17.5, xy.h)
-            ctx.stroke()
-
-            ctx.beginPath()
-            ctx.strokeStyle = "rgba(24,23,25,0.15)"
-            ctx.moveTo(w + 32.5 + f, -f)
-            ctx.lineTo(-w * 0.95 + 32.5, xy.h)
-            ctx.stroke()
-
-            ctx.beginPath()
-            ctx.strokeStyle = "rgba(24,23,25,0.05)"
-            ctx.moveTo(w + 47.5 + f, -f)
-            ctx.lineTo(-w * 0.95 + 47.5, xy.h)
-            ctx.stroke()
-
-        }
-
-        drawLight(s1 = M.W.w, s2=0, x1=-M.W.w * 0.95, x2=M.W.w * 0.55, ctx = this.ctx) {
+        drawLight(s1 = M.W.w, s2 = 0, x1 = -M.W.w * 0.95, x2 = M.W.w * 0.55, ctx = this.ctx) {
             const xy = M.W
             ctx.save()
             ctx.beginPath()
@@ -1170,8 +1175,7 @@ M.g__ = (p) => {
         }
 
         _e() {
-            M.E(window, 'resize', this.init, 'a')
-
+            M.E(window, 'resize', this.onResize, 'a')
         }
 
         e(o) {
@@ -1179,9 +1183,9 @@ M.g__ = (p) => {
         }
 
         mM(e) {
-            const t = _M
-            t.mouse.x = e.clientX
-            t.mouse.y = e.clientY
+            const t = _M.mouse
+            t.x = e.clientX
+            t.y = e.clientY
             this.cb(e)
         }
 
@@ -1218,12 +1222,12 @@ M.g__ = (p) => {
 
         intro() {
             this.i.intro()
+            _M.e.gl.intro()
 
         }
 
         run() {
             _M.e.s.stop()
-            _M.e.gl.run()
             this.n.run()
             this.t.run()
 

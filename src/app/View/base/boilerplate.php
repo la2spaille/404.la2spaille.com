@@ -20,10 +20,9 @@
     <main id="main">
         <?= $this->content; ?>
     </main>
-    <?php include ROOT . 'app/View/gl/gl.php'; ?>
     <?php include ROOT . 'app/View/common/header.php'; ?>
-    <?php include ROOT . 'app/View/common/loader.php'; ?>
-    <?php include ROOT . 'app/View/common/progress.php'; ?>
+    <?php include ROOT . 'app/View/common/overlay.php'; ?>
+    <?php include ROOT . 'app/View/gl/gl.php'; ?>
     <?php include ROOT . 'app/View/script/script.php'; ?>
 </div>
 </body>

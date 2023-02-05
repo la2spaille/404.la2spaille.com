@@ -19,8 +19,10 @@
             y: 0
         },
         mouse: {
-            x: 0,
-            y: 0
+            x: innerWidth / 2,
+            y: innerHeight / 2,
+            deltaX: 0,
+            deltaY: 0
         },
         config: {
             serviceWorker: false
