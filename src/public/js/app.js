@@ -407,11 +407,12 @@ M.Sp = t => t.stopPropagation()
                             this.run()
                             M.Cl('.lamp', 'a', 'is-rm')
                             M.Cl('.spider_web', 'r', 'is-hidden')
+                            M.Cl('#footer', 'r', 'is-hidden')
 
                         }
                     })
                     .add({
-                        el:'.txt_notice',
+                        el:'.txt_notice0',
                         p:{
                             y:[105,0,'%']
                         },
@@ -419,9 +420,27 @@ M.Sp = t => t.stopPropagation()
                         e:'o3',
                     })
                     .add({
-                        el:'.txt_notice',
+                        el:'.txt_notice0',
                         p:{
-                            y:[0,-150,'%']
+                            y:[0,-105,'%']
+                        },
+                        d:750,
+                        delay:1750,
+                        e:'o3',
+                    })
+                    .add({
+                        el:'.txt_notice1',
+                        p:{
+                            y:[105,0,'%']
+                        },
+                        d:1000,
+                        delay:750,
+                        e:'o3',
+                    })
+                    .add({
+                        el:'.txt_notice1',
+                        p:{
+                            y:[0,-105,'%']
                         },
                         d:750,
                         delay:1750,

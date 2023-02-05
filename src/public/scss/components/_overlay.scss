@@ -27,12 +27,17 @@
     opacity: 0;
   }
 }
-#notice {
-  position: absolute;
-  top:50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
+#notice0,#notice1 {
+  position: fixed;
+  @include _inset(0, 0 , 0, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-#notice p span {
+#notice0 p span,#notice1 p span {
   transform: translateY(105%);
+  max-width: 90vw;
+  text-align: center;
+  display: flex;
+
 }
