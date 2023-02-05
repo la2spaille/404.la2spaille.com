@@ -1,24 +1,15 @@
-h1 {
-  margin: 0 0 16px;
-}
-
 .w-text {
   p {
     margin: 8px 0;
   }
 }
-.f-hidden {
-  &.c-icon::after {
-    transition: .5s var(--ease-o3)
-  }
 
+h1 {
+  margin: 0 0 16px;
 }
+
 .f-center {
   text-align: center;
 }
 
-._s--text {
-  transform: translateY(105%);
-
-}
 

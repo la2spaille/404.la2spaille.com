@@ -2,7 +2,6 @@
 
 namespace App\Controller\Page;
 
-use App\Model\Api;
 use \Engine\Controller\Controller;
 
 class Home extends Controller

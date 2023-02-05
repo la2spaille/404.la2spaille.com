@@ -415,20 +415,10 @@ M.Cl = (el, action, css) => {
         s[i].classList[action](css)
     }
 }
-M.Cr = el => document.createElement(el)
-M.Tg = (t, i = false) => i ? t.currentTarget : t.target,
-    M.Pn = t => t.parentNode
-M.C = t => t.childrenM.Sp = t => t.stopPropagation()
-M.In = t => location.href.includes(t)
-M.__ = (p, v, t) => {
-    const el = t ? M.Select(t) : document.documentElement
-    el.style.setProperty(p, v)
-}
-M.g__ = (p) => {
-    let root = document.documentElement,
-        v = root.style.getPropertyValue(p)
-    return v.split('px')[0]
-}
+M.Tg = (t, i = false) => i ? t.currentTarget : t.target
+M.Pn = t => t.parentNode
+M.Sp = t => t.stopPropagation()
+
 
 !function () {
     "use strict"
@@ -450,570 +440,12 @@ M.g__ = (p) => {
 
     }
 
-    class d {
-        constructor(o) {
-            this.data = o
-        }
-
-        get() {
-            let t = this.data[_M.route.new.url]
-            return M.Is.und(t) ? false : t
-        }
-    }
-
-    class t {
-        constructor() {
-            M.Bind(this, ["update", "removeOld", "insertNew", "vLoad", "onPopstate"])
-            this.l = new l
-            this.cache = ''
-            this.a = M.SelectAll('._a')
-            this.r = new M.Raf(this.vLoad)
-            this.init()
-        }
-
-        vLoad() {
-            if (document.readyState == 'complete') {
-                M.De(document, 'vLoad')
-                this.r.stop()
-            }
-        }
-
-        init() {
-            var t = _M
-            M.Fetch({
-                url: origin + "/brain?xhr=true",
-                type: "html",
-                method: 'GET',
-                success: r => {
-                    r = JSON.parse(r)
-                    const c = t.config
-                    c.routes = r.routes
-                    this.cache = new d(r.cache)
-                    this.layer = M.Select('#main')
-                }
-            })
-        }
-
-        update(e) {
-            M.PD(e)
-            let tg = M.Tg(e),
-                p = tg.pathname
-            for (let l of this.a) {
-                M.Cl(l.parentNode, 'r', 'is-active')
-            }
-            M.Cl(tg.parentNode, 'a', 'is-active')
-            p !== _M.route.new.url && this.switch(p)
-        }
-
-        onPopstate() {
-            let p = location.pathname
-            for (let l of this.a) {
-                if (l.pathname != p)
-                    M.Cl(l.parentNode, 'r', 'is-active')
-                else
-                    M.Cl(l.parentNode, 'a', 'is-active')
-
-            }
-            p !== _M.route.new.url && this.switch(p, false)
-
-        }
-
-        switch(u, h = true) {
-            const t = _M
-            let p = t.config.routes[u]
-            t.route.old = t.route.new
-            t.route.new = {
-                url: u,
-                page: p
-            }
-            h && history.pushState({path: u}, '', u)
-            h && t.was.push({
-                ...t.route.old
-            })
-            console.log(_M.was)
-            this.c()
-        }
-
-        c() {
-            this.insertNew()
-            let _old = this.layer.children[0],
-                _new = this.layer.children[1],
-                _i = new i,
-                t = _M.e.s
-            t.stop()
-            let tl = new M.TL()
-            tl
-                .add({
-                    el: _new,
-                    p: {o: [0, 0]},
-                })
-                .add({
-                    el: _old,
-                    p: {o: [1, 0]},
-                    d: 500,
-                    delay: 200
-                })
-                .add({
-                    el: _old,
-                    cb: () => {
-                        this.removeOld()
-                    },
-                    delay: 700
-                })
-                .add({
-                    el: _new,
-                    p: {o: [0, 1]},
-                    d: 500,
-                    cb: () => {
-                        t.init()
-                        _i.intro()
-                        t.run()
-                    }
-                })
-                .add({
-                    el: '',
-                    cb: () => {
-                        _M.e.b.on()
-                    },
-                    delay: 500
-                })
-                .play()
-        }
-
-        insertNew() {
-            let N = this.cache.get()
-            document.title = N.title
-            this.add(N.html)
-        }
-
-        removeOld() {
-            let O = this.layer.children
-            O[0].parentNode.removeChild(O[0])
-        }
-
-        e() {
-            M.E('._a', 'click', this.update)
-            M.E(window, 'popstate', this.onPopstate)
-        }
-
-        add(el) {
-            this.layer.insertAdjacentHTML("beforeend", el)
-        }
-
-        run() {
-            this.e()
-            this.vLoad()
-        }
-    }
-
-    class l {
-        constructor() {
-            M.Bind(this, ['loop', 'intro', 'outro'])
-            this.r = new M.Raf(this.loop)
-            this.init()
-            this.intro()
-        }
-
-        loop() {
-        }
-
-        init() {
-        }
-
-        outro() {
-        }
-
-        intro() {
-        }
-
-        update() {
-        }
-
-    }
-
-    class p {
-        constructor(el) {
-            M.Bind(this, ['close'])
-            this.el = M.Select(el)
-        }
-
-        show() {
-            _M.e.s.stop()
-            this.run()
-        }
-
-        close(e) {
-
-        }
-
-        run() {
-            this.e('a')
-        }
-
-        e(o) {
-        }
-    }
-
-    class n {
-        constructor() {
-            M.Bind(this, ["open", "close"])
-        }
-
-        e(o) {
-            M.E(".open_nav", 'click', this.open, o)
-            M.E(".close_nav", 'click', this.close, o)
-        }
-
-        run() {
-            this.e('a')
-        }
-
-        open(e) {
-            this.cb(e, 'a')
-        }
-
-        close(e) {
-            this.cb(e, 'r')
-        }
-
-        cb(e, o) {
-            e.stopPropagation()
-            M.Cl(".w-nav_header", o, 'is-active')
-            M.Cl(".open_nav", o, 'is-active')
-            M.Cl(".close_nav", o, 'is-active')
-        }
-    }
-
-    class s {
-        constructor() {
-            M.Bind(this, ["w", "key", "tS", "tM", "onScroll", "loop", "run", "resize", "loop"])
-            _M.scroll = {
-                x: 0,
-                y: 0,
-                deltaX: 0,
-                deltaY: 0,
-                origin: null,
-            }
-            this.options = {
-                mM: 1,
-                tM: 2,
-                fM: 50,
-                kS: 240,
-                speed: 0.5,
-                preventTouch: false
-            }
-            this.scrollY = 0
-            this.isFirefox = navigator.userAgent.indexOf('Firefox') > -1;
-            this.isScrolling = false;
-            this.hasScrollTicking = false
-
-        }
-
-        get max() {
-            const p = M.Select('.page')
-            return p.scrollHeight - innerHeight
-        }
-
-
-        rRaf() {
-            this.t = Date.now()
-            this.isScrolling = true
-            this.loop()
-        }
-
-        pause() {
-            cancelAnimationFrame(this.loopId)
-            this.isScrolling = false
-            _M.scroll.y = M.R(_M.scroll.y)
-
-        }
-
-        cb(e) {
-
-            if (e.ctrlKey) return
-            let smooth = !!e.changedTouches ? false : true
-            if (!smooth) return
-            if (e.buttons === 4) return
-
-            M.PD(e)
-            requestAnimationFrame(() => {
-                const t = _M.scroll
-                t.y = M.Clamp(t.y + t.deltaY, 0, this.max)
-                t.originalEvent = e
-                if (!this.isScrolling) this.rRaf();
-            })
-
-
-        }
-
-        loop() {
-            if (this.isScrolling) {
-                if (!this.hasScrollTicking) {
-                    this.loopId = requestAnimationFrame(() => this.loop())
-                    this.hasScrollTicking = true
-                }
-
-                scrollTo(0, this.scrollY)
-                this._scrollY()
-                const d = Math.abs(this.scrollY - _M.scroll.y),
-                    _t = Date.now() - this.t
-                if (_t > 100 && d < 0.5) {
-                    this.pause();
-                }
-                this.hasScrollTicking = false
-
-            }
-
-        }
-
-        run() {
-            let root = document.documentElement
-            M.Cl(root, 'r', 's')
-            this.e('a')
-        }
-
-        stop() {
-            let root = document.documentElement
-            M.Cl(root, 'a', 's')
-            this.e('r')
-        }
-
-        init() {
-            this.scrollY = _M.scroll.y = scrollY
-        }
-
-        w(e) {
-            const t = _M.scroll
-            t.deltaX = e.deltaX
-            t.deltaY = e.deltaY
-            if (this.isFirefox && e.deltaMode == 1) {
-                t.deltaX *= this.options.fM;
-                t.deltaY *= this.options.fM;
-            }
-            t.deltaX *= this.options.mM
-            t.deltaY *= this.options.mM
-            this.cb(e)
-        }
-
-        tS(e) {
-            let T = (e.targetTouches) ? e.targetTouches[0] : e
-            this.tsX = T.pageX
-            this.tsY = T.pageY
-        }
-
-        tM(e) {
-            const t = _M
-            let T = (e.targetTouches) ? e.targetTouches[0] : e
-            t.scroll.deltaX = (T.pageX - this.tsX) * this.options.tM
-            t.scroll.deltaY = (T.pageY - this.tsY) * this.options.tM
-            this.tsX = T.pageX
-            this.tsY = T.pageY
-            this.cb(e)
-        }
-
-        key(e) {
-            const t = _M.scroll;
-            t.deltaX = t.deltaY = 0;
-            let key = [
-                    {c: 37, d: 'x', s: -1},
-                    {c: 39, d: 'x', s: 1},
-                    {c: 38, d: 'y', s: -1},
-                    {c: 40, d: 'y', s: 1}
-                ],
-                n = M.L(key);
-            for (let i = 0; i < n; i++) {
-                if (e.keyCode === key[i].c) {
-                    t[key[i].d === "x" ? "deltaX" : "deltaY"] = this.options.kS * key[i].s
-                }
-            }
-
-            (t.deltaX || t.deltaY) && this.cb(e)
-        }
-
-        _scrollY() {
-            this.scrollY = M.Lerp(this.scrollY, _M.scroll.y, 0.1)
-        }
-
-        resize(e) {
-            requestAnimationFrame(() => {
-                const t = _M.scroll
-                t.y = M.R(M.Clamp(t.y, 0, this.max), 0)
-                if (!this.isScrolling) this.rRaf();
-            })
-
-        }
-
-        onScroll() {
-            if (!this.isScrolling) {
-                this.scrollY = _M.scroll.y = scrollY
-            }
-
-        }
-
-        e(o) {
-            M.E(document, "keydown", this.key, o)
-            M.E(window, "wheel", this.w, o, {passive: false})
-            M.E(window, "touchstart", this.tS, o, {passive: false})
-            M.E(window, "touchmove", this.tM, o)
-            M.E(window, "scroll", this.onScroll, o)
-            M.E(window, "resize", this.resize, o)
-            M.E(window, "orientationchange", this.resize, o)
-        }
-
-        scrollTo(y) {
-            _M.scroll.y = y
-            this.rRaf()
-
-        }
-
-    }
-
-    class P {
-        constructor(el) {
-            M.Bind(this, ['onScroll'])
-            this.el = el
-            this.o = JSON.parse(this.el.dataset.options)
-            this.r = this.o.s
-            this.c = this.o.c
-            this.elementY = M.XY.offsetTop(this.el) + this.el.offsetHeight / 2
-            this.el.style.willChange = 'transform'
-            this.s = new M.Scope(el, 0)
-            this.run()
-        }
-
-        static init() {
-            M.SelectAll('.P').map(
-                (el) => {
-                    return new P(el)
-                }
-            )
-        }
-
-        t(el, x, y) {
-            let xyz = `matrix3d(1,0,0.00,0,0.00,1,0.00,0,0,0,1,0,${x},${y},0,1)`;
-            el.style.setProperty('webkitTransform', xyz);
-            el.style.setProperty('msTransform', xyz);
-            el.style.setProperty('transform', xyz);
-        }
-
-        cb() {
-            const screnY = scrollY + innerHeight / 2;
-            const d = this.elementY - screnY;
-            if (this.c && d < 0) {
-                this.t(this.el, 0, d * -1 * this.r)
-
-            } else if (!this.c) {
-                this.t(this.el, 0, d * -1 * this.r)
-            }
-
-        }
-
-        onScroll(f = false) {
-            f || this.cb();
-            (this.s.visible()) && (requestAnimationFrame(() => this.cb()));
-
-        }
-
-        e(o) {
-            M.E(document, "scroll", this.onScroll, o)
-
-        }
-
-        run() {
-            this.onScroll(true)
-            this.e('a')
-        }
-
-    }
-
-    class S {
-        constructor() {
-        }
-
-        static init() {
-            let b = M.G.class("_s--text"), m = M.L(b)
-            for (let i = 0; i < m; i++) {
-                new M.Scope(
-                    b[i], 1, {
-                        cb: () => {
-                            let mo = new M.Mo({
-                                el: b[i],
-                                p: {y: [105, 0, '%']},
-                                d: .7 * 1000,
-                                e: 'o3'
-                            })
-                            mo.play()
-                        }
-                    }).observe()
-
-            }
-            let c = M.G.class("_s--o"), o = M.L(c)
-            for (let i = 0; i < o; i++) {
-                new M.Scope(c[i], 0.7, {
-                    cb: () => {
-                        let mo = new M.Mo({
-                            el: c[i],
-                            p: {o: [0, 1]},
-                            d: .7 * 1000,
-                            delay: .25 * 1000,
-                            e: 'o3'
-                        })
-                        mo.play()
-                    }
-                }).observe()
-            }
-        }
-    }
-
-    class T {
-        constructor(el) {
-            M.Bind(this, ['open', 'close'])
-            this.id = el.id
-            this.run()
-        }
-
-        static init() {
-            return M.SelectAll('.T').map(
-                (el) => {
-                    return new T(el)
-                }
-            )
-        }
-
-        run() {
-            this.e('a')
-        }
-
-        open(e) {
-            M.Sp(e);
-            _M.e.s.stop();
-            this.cl('a');
-            if (this.id === 'search') M.Select('#searchInput').focus();
-        }
-
-        close(e) {
-            M.Sp(e);
-            _M.e.s.run();
-            this.cl('r');
-        }
-
-        e(a) {
-            M.E(M.Select("#" + this.id + "-open"), 'click', this.open, a);
-            M.E("." + this.id + "-close", 'click', this.close, a);
-        }
-
-        cl(o) {
-            M.Cl(M.Select("#" + this.id), o, "is-active");
-            M.Cl(M.Select("#overlay"), o, "is-active");
-        }
-    }
-
     class gl {
         constructor() {
             M.Bind(this, ['mM', 'loop', 'onResize'])
             this.c = M.Select('#gl')
             this.t = {
-                x: M.W.w /2,
+                x: M.W.w / 2,
                 y: M.W.h / 2
             }
             this.ctx = this.c.getContext('2d')
@@ -1041,21 +473,21 @@ M.g__ = (p) => {
         }
 
         intro() {
-            new M.Delay(1500,()=> {
-                M.Cl('#overlay','a','is-active')
+            new M.Delay(1500, () => {
+                M.Cl('#overlay', 'a', 'is-active')
                 new M.TL()
                     .add({
                         el: '',
                         delay: 700,
                         cb: () => {
-                            M.Cl('#overlay','a','is-hidden')
+                            M.Cl('#overlay', 'a', 'is-hidden')
                         }
                     })
                     .add({
                         el: '',
                         delay: 1000,
                         cb: () => {
-                            M.Cl('#overlay','r','is-hidden')
+                            M.Cl('#overlay', 'r', 'is-hidden')
 
                         }
                     })
@@ -1063,14 +495,14 @@ M.g__ = (p) => {
                         el: '',
                         delay: 500,
                         cb: () => {
-                            M.Cl('#overlay','a','is-hidden')
+                            M.Cl('#overlay', 'a', 'is-hidden')
                         }
                     })
                     .add({
                         el: '',
                         delay: 500,
                         cb: () => {
-                            M.Cl('#overlay','r','is-hidden')
+                            M.Cl('#overlay', 'r', 'is-hidden')
 
                         }
                     })
@@ -1078,7 +510,7 @@ M.g__ = (p) => {
                         el: '',
                         delay: 1000,
                         cb: () => {
-                            M.Cl('#overlay','a','is-hidden')
+                            M.Cl('#overlay', 'a', 'is-hidden')
 
                         }
                     })
@@ -1086,7 +518,7 @@ M.g__ = (p) => {
                         el: '',
                         delay: 1000,
                         cb: () => {
-                            M.Cl('#overlay','r','is-hidden')
+                            M.Cl('#overlay', 'r', 'is-hidden')
 
                         }
                     })
@@ -1103,7 +535,7 @@ M.g__ = (p) => {
                         el: '',
                         delay: 1000,
                         cb: () => {
-                            M.Cl('#overlay','a','is-hidden')
+                            M.Cl('#overlay', 'a', 'is-hidden')
                             console.log('hey')
 
                         }
