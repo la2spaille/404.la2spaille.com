@@ -39,6 +39,8 @@ $f-sizes: (
         72px : 1,
         96px : 1,
         128px : 1,
+        192px : 1,
+        256px : 1,
 );
 @each $size, $ln in $f-sizes {
   .f-#{$size} {
@@ -47,18 +49,7 @@ $f-sizes: (
   }
 }
 
-$medias: (m-tp:640px, m-t:768px, m-l:1024px, m-d:1280px);
-@each $media, $value in $medias {
-  @media (min-width: $value) {
-    @each $size, $ln in $f-sizes {
-      .#{$media}\:f-#{$size} {
-        font-size: rem($size);
-        line-height: $ln;
-      }
 
-    }
-  }
-}
 
 //weight
 $f-weights: (400, 500, 600, 700);

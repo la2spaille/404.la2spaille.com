@@ -406,12 +406,30 @@ M.Sp = t => t.stopPropagation()
                             this.loop()
                             this.run()
                             M.Cl('.lamp', 'a', 'is-rm')
+                            M.Cl('.spider_web', 'r', 'is-hidden')
 
                         }
                     })
                     .add({
+                        el:'.txt_notice',
+                        p:{
+                            y:[105,0,'%']
+                        },
+                        d:1000,
+                        e:'o3',
+                    })
+                    .add({
+                        el:'.txt_notice',
+                        p:{
+                            y:[0,-150,'%']
+                        },
+                        d:750,
+                        delay:1750,
+                        e:'o3',
+                    })
+                    .add({
                         el: '',
-                        delay: 1000,
+                        delay: 800,
                         cb: () => {
                             M.Cl('#overlay', 'a', 'is-hidden')
                             this.i = 0
