@@ -68,20 +68,15 @@ canvas {
 }
 
 body, html {
-  scrollbar-width: thin;
-  scrollbar-color: var(--gsw) var(--bg);
   min-height: 100%;
   height: auto;
+  overscroll-behavior: none;
 }
 
 html {
   -webkit-text-size-adjust: none;
   -webkit-font-smoothing: antialiased;
   scroll-behavior: initial;
-
-  &.s {
-    overflow: hidden;
-  }
 }
 
 body {
@@ -102,7 +97,6 @@ body {
   top: 0;
   width: 100%;
   left: 0;
-  background: var(--bg);
 }
 
 

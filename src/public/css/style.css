@@ -443,6 +443,31 @@
   font-weight: 700;
 }
 
+.f-center {
+  text-align: center;
+}
+
+.f-hidden {
+  overflow: hidden;
+  line-height: 1.25;
+}
+
+.f-upper {
+  text-transform: uppercase;
+}
+
+.f-lower {
+  text-transform: lowercase;
+}
+
+.f-capitalize {
+  text-transform: capitalize;
+}
+
+.f-underline {
+  text-decoration: underline;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -507,19 +532,15 @@ canvas {
 }
 
 body, html {
-  scrollbar-width: thin;
-  scrollbar-color: var(--gsw) var(--bg);
   min-height: 100%;
   height: auto;
+  overscroll-behavior: none;
 }
 
 html {
   -webkit-text-size-adjust: none;
   -webkit-font-smoothing: antialiased;
   scroll-behavior: initial;
-}
-html.s {
-  overflow: hidden;
 }
 
 body {
@@ -538,7 +559,6 @@ body {
   top: 0;
   width: 100%;
   left: 0;
-  background: var(--bg);
 }
 
 @media screen and (min-width: 1024px) {
@@ -605,10 +625,6 @@ header {
 
 h1 {
   margin: 0 0 16px;
-}
-
-.f-center {
-  text-align: center;
 }
 
 section .l-rl {

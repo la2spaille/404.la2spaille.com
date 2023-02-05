@@ -68,3 +68,30 @@ $f-weights: (400, 500, 600, 700);
   }
 }
 
+// align
+.f-center {
+  text-align: center;
+}
+
+// hidden
+.f-hidden {
+  overflow: hidden;
+  line-height: 1.25;
+}
+
+// text-transform
+.f-upper {
+  text-transform: uppercase;
+}
+
+.f-lower {
+  text-transform: lowercase;
+}
+
+.f-capitalize {
+  text-transform: capitalize;
+}
+// text-decoration
+.f-underline {
+  text-decoration:underline;
+}

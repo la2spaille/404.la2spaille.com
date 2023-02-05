@@ -14,10 +14,6 @@
 <script>
     window._M = {
         delay: 700,
-
-        scroll: {
-            y: 0
-        },
         mouse: {
             x: innerWidth / 2,
             y: innerHeight / 2,
@@ -26,16 +22,6 @@
         },
         config: {
             serviceWorker: false
-        },
-        route: {
-            "new": {
-                "url": location.pathname,
-                "page": null
-            },
-            "old": {
-                "url": false,
-                "page": false
-            }
         },
         e: {
             s: null,
@@ -47,7 +33,6 @@
             S: null,
             T: null
         }
-        , was: []
     }
     if ('serviceWorker' in navigator) {
         _M.config.serviceWorker && navigator.serviceWorker.register('/sw.js');

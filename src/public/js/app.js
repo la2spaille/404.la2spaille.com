@@ -200,53 +200,6 @@ M.Delay = class {
         }
     }
 }
-M.Scope = class {
-    constructor(el, r, o) {
-        M.Bind(this, ['cb'])
-        this.el = M.Select(el)
-        this.r = r
-        this.o = o
-    }
-
-    e(a) {
-        M.E(document, 'scroll', this.cb, a)
-        M.E(window, 'load', this.cb, a)
-        M.E(document, 'vLoad', this.cb, a)
-    }
-
-    observe() {
-        this.e('a')
-
-    }
-
-    unobserve() {
-        this.e('r')
-
-    }
-
-    visible() {
-        const r = this.r, h = this.el.offsetHeight
-        let t = this.el.getBoundingClientRect().top,
-            b = this.el.getBoundingClientRect().bottom,
-            vH = (innerHeight - t) / h
-
-        return (vH > r) && (b > 0);
-
-    }
-
-
-    cb() {
-        if (this.visible()) {
-            this.o.css && this.cl()
-            this.o.cb && this.o.cb()
-            this.unobserve()
-        }
-    }
-
-    cl() {
-        this.o.css && M.Cl(this.el, 'r', this.o.css)
-    }
-}
 M.W = class {
     static get w() {
         return innerWidth
@@ -261,32 +214,12 @@ M.Is = {
     und: t => t === undefined,
     null: t => t === null,
     str: t => "string" == typeof t,
-    obj: t => t === Object(t),
     arr: t => t.constructor === Array,
-    img: t => t.tagName === "IMG",
-    imgLoad: t => t.complete === true, // A gérer avec un RAF
-    interval: (t, inf, sup) => t >= inf && t <= sup
 }
 M.Ease = {
     linear: t => t,
     cb: t => t ** 3 - 3 * t ** 2 + 3 * t,
     o3: t => (--t) * t * t + 1
-}
-M.XY = {
-    accX: 0, accY: 0, offsetTop: function (el) {
-        this.accY = 0
-        if (el.offsetParent) {
-            this.accY = this.offsetTop(el.offsetParent)
-        }
-        return el.offsetTop + this.accY
-    }, offsetLeft: function (el) {
-        this.accX = 0
-        if (el.offsetParent) {
-            this.accX = this.offsetLeft(el.offsetParent)
-        }
-        return el.offsetLeft + this.accX
-    }
-
 }
 M.G = {
     root: r => M.Is.def(r) ? r : document,
@@ -319,25 +252,6 @@ M.Clamp = (t, inf, sup) => Math.max(inf, Math.min(sup, t))
 M.Lerp = (s, e, a) => s * (1 - a) + a * e
 M.Has = (t, r) => t.hasOwnProperty(r)
 M.Rand = (a, b) => Math.random() * (b - a) + a
-M.Fetch = o => {
-    let t = "json" === o.type;
-    const s = t ? "json" : "text"
-        , p = {
-        method: o.method,
-        headers: new Headers({
-            "Content-type": t ? "application/x-www-form-urlencoded" : "text/html"
-        }),
-        mode: "same-origin"
-    }
-    t && (p.body = o.body)
-    fetch(o.url, p)
-        .then(r => {
-            if (r.ok) return r[s]()
-        })
-        .then(r => {
-            o.success(r)
-        })
-}
 M.PD = t => {
     t.cancelable && t.preventDefault()
 }
@@ -403,10 +317,6 @@ M.E = (el, e, cb, o, opt) => {
     }
 }
 M.L = t => t.length
-M.De = (t, s) => {
-    const cE = new CustomEvent(s)
-    t.dispatchEvent(cE)
-}
 M.Cl = (el, action, css) => {
     if (M.Is.und(el)) return
     let s = M.SelectAll(el), n = M.L(s)
@@ -419,13 +329,12 @@ M.Tg = (t, i = false) => i ? t.currentTarget : t.target
 M.Pn = t => t.parentNode
 M.Sp = t => t.stopPropagation()
 
-
+// Main
 !function () {
     "use strict"
 
     class i {
         constructor() {
-            this.p = new p
         }
 
         intro(d = _M.delay) {
@@ -442,14 +351,15 @@ M.Sp = t => t.stopPropagation()
 
     class gl {
         constructor() {
-            M.Bind(this, ['mM', 'loop', 'onResize'])
-            this.c = M.Select('#gl')
+            M.Bind(this, ['mM', 'tM', 'loop', 'onResize'])
             this.t = {
                 x: M.W.w / 2,
                 y: M.W.h / 2
             }
+            this.c = M.Select('#gl')
             this.ctx = this.c.getContext('2d')
-            this.r = new M.Raf(this.loop)
+            this.r = _D.isD ? 150 : 100
+            this.raf = new M.Raf(this.loop)
             this._e()
 
         }
@@ -536,8 +446,6 @@ M.Sp = t => t.stopPropagation()
                         delay: 1000,
                         cb: () => {
                             M.Cl('#overlay', 'a', 'is-hidden')
-                            console.log('hey')
-
                         }
                     })
                     .play()
@@ -548,9 +456,9 @@ M.Sp = t => t.stopPropagation()
             this.clear()
             this.drawBg()
             this.drawText()
-            this.drawTorch(150)
+            this.drawTorch()
             const d = Math.abs(this.t.x - _M.mouse.x)
-            if (d < 0.5 && this.r.on) this.r.stop()
+            if (d < 0.5 && this.raf.on) this.raf.stop()
         }
 
         clear() {
@@ -579,7 +487,7 @@ M.Sp = t => t.stopPropagation()
             ctx.fillText("404 NOT FOUND", 32, 56);
         }
 
-        drawTorch(r, ctx = this.ctx) {
+        drawTorch(r = this.r, ctx = this.ctx) {
             const _ = _M.mouse
             this.t.x = M.Lerp(this.t.x, _.x, 0.1)
             this.t.y = M.Lerp(this.t.y, _.y, 0.1)
@@ -612,6 +520,7 @@ M.Sp = t => t.stopPropagation()
 
         e(o) {
             M.E(window, 'mousemove', this.mM, o)
+            _D.isM && M.E(window, "touchmove", this.tM, o)
         }
 
         mM(e) {
@@ -621,8 +530,17 @@ M.Sp = t => t.stopPropagation()
             this.cb(e)
         }
 
+        tM(e) {
+            const t = _M.mouse
+            let T = (e.targetTouches) ? e.targetTouches[0] : e,
+                d = T.pageY > M.W.h - this.r * 0.5 ? this.r * 0.5 : this.r * 1.75
+            t.x = T.pageX
+            t.y = T.pageY - d
+            this.cb(e)
+        }
+
         cb() {
-            this.r.on || this.r.run()
+            this.raf.on || this.raf.run()
         }
 
     }
@@ -631,24 +549,15 @@ M.Sp = t => t.stopPropagation()
         constructor() {
             M.Bind(this, ['on'])
             this.i = new i
-            this.l = new l
-            this.n = new n
-            this.t = new t
             this.on()
         }
 
         _init() {
-            _M.e.s = new s
             _M.e.gl = new gl
-            _M.E.S = S.init()
-            _M.E.T = T.init()
-            _M.E.P = _D.isM || P.init()
 
         }
 
         init() {
-            this.setHH()
-            _M.e.s.init()
             _M.e.gl.init()
         }
 
@@ -659,16 +568,6 @@ M.Sp = t => t.stopPropagation()
         }
 
         run() {
-            _M.e.s.stop()
-            this.n.run()
-            this.t.run()
-
-        }
-
-        setHH() {
-            let h = M.Select('#header')
-            h = h.offsetHeight
-            M.__('--header-height', h + 'px')
 
         }
 
@@ -681,7 +580,7 @@ M.Sp = t => t.stopPropagation()
 
     }
 
-    (_M.e.b = new b)
+    (_M.e.b = new b);
 
-    console.log('\n %c Made with ❤️ by La2spaille  %c \n ', 'border: 1px solid #000;color: #fff; background: #000; padding:5px 0;', '')
+    console.log('\n %c Made with ❤️ by La2spaille – https://la2spaille.studio/  %c \n ', 'border: 1px solid #000;color: #fff; background: #000; padding:5px 0;', '')
 }()
