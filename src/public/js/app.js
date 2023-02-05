@@ -415,6 +415,7 @@ M.Sp = t => t.stopPropagation()
                         p:{
                             y:[105,0,'%']
                         },
+                        delay:750,
                         d:1000,
                         e:'o3',
                     })
@@ -424,7 +425,7 @@ M.Sp = t => t.stopPropagation()
                             y:[0,-105,'%']
                         },
                         d:750,
-                        delay:1750,
+                        delay:2500,
                         e:'o3',
                     })
                     .add({
@@ -442,7 +443,7 @@ M.Sp = t => t.stopPropagation()
                             y:[0,-105,'%']
                         },
                         d:750,
-                        delay:1750,
+                        delay:2500,
                         e:'o3',
                     })
                     .add({
