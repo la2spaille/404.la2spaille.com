@@ -8,8 +8,8 @@
   user-select: none;
 
   &::selection {
-    background: var(--primary);
-    color: var(--light)
+    background: var(--bg);
+    color: var(--primary)
   }
 }
 
