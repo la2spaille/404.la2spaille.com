@@ -580,7 +580,7 @@ body {
   z-index: 820;
   background: var(--dark);
   opacity: 1;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.5s 0.3s ease;
   pointer-events: none;
 }
 #overlay.is-active .c-logo {
@@ -639,6 +639,21 @@ section .l-rl {
 }
 .p-home .w-text h1 span {
   font-size: clamp(128px, 32vw, 192px);
+}
+
+.lamp {
+  position: fixed;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+  clip-path: circle(35% at 50% 50%);
+  transition: clip-path 0.3s ease;
+}
+.lamp.is-active {
+  clip-path: circle(50% at 50% 50%);
+}
+.lamp.is-rm {
+  display: none;
 }
 
 /*# sourceMappingURL=style.css.map */

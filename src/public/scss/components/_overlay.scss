@@ -7,7 +7,7 @@
   z-index: 820;
   background: var(--dark);
   opacity: 1;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.5s .3s ease;
   pointer-events: none;
 
   &.is-active {

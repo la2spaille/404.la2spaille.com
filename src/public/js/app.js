@@ -352,24 +352,23 @@ M.Sp = t => t.stopPropagation()
     class gl {
         constructor() {
             M.Bind(this, ['mM', 'tM', 'loop', 'onResize'])
+            this.c = M.Select('#gl')
             this.t = {
                 x: M.W.w / 2,
                 y: M.W.h / 2
             }
-            this.c = M.Select('#gl')
             this.ctx = this.c.getContext('2d')
             this.r = _D.isD ? 150 : 100
             this.raf = new M.Raf(this.loop)
+            this.i = 1
             this._e()
+
 
         }
 
         onResize() {
             requestAnimationFrame(() => {
-                this.c.width = M.W.w
-                this.c.height = M.W.h
-                this.drawBg()
-                this.drawText()
+                this.init()
             })
         }
 
@@ -378,66 +377,35 @@ M.Sp = t => t.stopPropagation()
             this.c.height = M.W.h
             this.drawBg()
             this.drawText()
-            this.drawLight()
-
+            this.i && this.drawLight()
+            this.i || this.loop()
         }
 
         intro() {
+
             new M.Delay(1500, () => {
                 M.Cl('#overlay', 'a', 'is-active')
-                new M.TL()
-                    .add({
+                let T = new M.TL()
+                const D = [700, 1500, 1000, 1000, 1500, 1000]
+                for (let i = 0; i < M.L(D); i++) {
+                    T.add({
                         el: '',
-                        delay: 700,
+                        delay: D[i],
                         cb: () => {
-                            M.Cl('#overlay', 'a', 'is-hidden')
+                            M.Cl('#overlay', 't', 'is-hidden')
+                            M.Cl('.lamp', 't', 'is-active')
                         }
                     })
-                    .add({
-                        el: '',
-                        delay: 1000,
-                        cb: () => {
-                            M.Cl('#overlay', 'r', 'is-hidden')
+                }
 
-                        }
-                    })
-                    .add({
-                        el: '',
-                        delay: 500,
-                        cb: () => {
-                            M.Cl('#overlay', 'a', 'is-hidden')
-                        }
-                    })
-                    .add({
-                        el: '',
-                        delay: 500,
-                        cb: () => {
-                            M.Cl('#overlay', 'r', 'is-hidden')
-
-                        }
-                    })
-                    .add({
-                        el: '',
-                        delay: 1000,
-                        cb: () => {
-                            M.Cl('#overlay', 'a', 'is-hidden')
-
-                        }
-                    })
-                    .add({
-                        el: '',
-                        delay: 1000,
-                        cb: () => {
-                            M.Cl('#overlay', 'r', 'is-hidden')
-
-                        }
-                    })
+                T
                     .add({
                         el: '',
                         delay: 500,
                         cb: () => {
                             this.loop()
                             this.run()
+                            M.Cl('.lamp', 'a', 'is-rm')
 
                         }
                     })
@@ -446,6 +414,11 @@ M.Sp = t => t.stopPropagation()
                         delay: 1000,
                         cb: () => {
                             M.Cl('#overlay', 'a', 'is-hidden')
+                            this.i = 0
+                            this.t = {
+                                x: M.W.w / 2,
+                                y: M.W.h / 2
+                            }
                         }
                     })
                     .play()
@@ -466,15 +439,6 @@ M.Sp = t => t.stopPropagation()
             this.ctx.fillRect(0, 0, xy.w, xy.h)
         }
 
-        clearCircle(ctx, x, y, r) {
-            ctx.save();
-            ctx.beginPath();
-            ctx.arc(x, y, r, 0, 2 * Math.PI, true);
-            ctx.clip();
-            ctx.clearRect(x - r, y - r, 2 * r, 2 * r);
-            ctx.restore();
-        }
-
         drawBg(ctx = this.ctx) {
             const xy = M.W
             ctx.fillStyle = '#181719';
@@ -493,9 +457,16 @@ M.Sp = t => t.stopPropagation()
             this.t.y = M.Lerp(this.t.y, _.y, 0.1)
             this.clearCircle(ctx, this.t.x, this.t.y, r)
 
-
         }
 
+        clearCircle(ctx, x, y, r) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, 2 * Math.PI, true);
+            ctx.clip();
+            ctx.clearRect(x - r, y - r, 2 * r, 2 * r);
+            ctx.restore();
+        }
 
         drawLight(s1 = M.W.w, s2 = 0, x1 = -M.W.w * 0.95, x2 = M.W.w * 0.55, ctx = this.ctx) {
             const xy = M.W
@@ -508,19 +479,6 @@ M.Sp = t => t.stopPropagation()
             ctx.clip()
             ctx.clearRect(0, 0, xy.w, xy.h)
             ctx.restore()
-        }
-
-        run() {
-            this.e('a')
-        }
-
-        _e() {
-            M.E(window, 'resize', this.onResize, 'a')
-        }
-
-        e(o) {
-            M.E(window, 'mousemove', this.mM, o)
-            _D.isM && M.E(window, "touchmove", this.tM, o)
         }
 
         mM(e) {
@@ -543,6 +501,18 @@ M.Sp = t => t.stopPropagation()
             this.raf.on || this.raf.run()
         }
 
+        _e() {
+            M.E(window, 'resize', this.onResize, 'a')
+        }
+
+        e(o) {
+            M.E(window, 'mousemove', this.mM, o)
+            _D.isM && M.E(window, "touchmove", this.tM, o)
+        }
+
+        run() {
+            this.e('a')
+        }
     }
 
     class b {
