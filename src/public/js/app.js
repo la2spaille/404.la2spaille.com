@@ -437,12 +437,12 @@ M.RafR = class {
     static id = 0
 
     constructor(cb) {
-
         M.Bind(this, ['run', 'stop'])
         this.cb = cb
         this.id = M.RafR.id
         this.on = !1
         M.RafR.id++
+
     }
 
     run() {
@@ -459,6 +459,15 @@ M.RafR = class {
         }
     }
 
+}
+M.W = class {
+    static get w() {
+        return innerWidth
+    }
+
+    static get h() {
+        return innerHeight
+    }
 }
 M.Delay = class {
     constructor(d, cb) {
@@ -562,7 +571,7 @@ M.Scope = class {
             }
             this.ctx = this.c.getContext('2d')
             this.r = _D.isD ? 150 : 100
-            this.raf = M.RafR(this.loop)
+            this.raf = new M.RafR(this.loop)
             this.i = 1
             this._e()
 
