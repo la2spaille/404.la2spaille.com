@@ -1,8 +1,188 @@
 window.M = {}
+
+M.Dom = {
+    html: document.documentElement,
+    body: document.body
+}
+M.Is = {
+    def: t => t !== undefined,
+    und: t => t === undefined,
+    null: t => t === null,
+    str: t => "string" == typeof t,
+    obj: t => t === Object(t),
+    arr: t => t.constructor === Array,
+    img: t => t.tagName === "IMG",
+    imgLoad: t => t.complete === true, // A gérer avec un RAF
+    interval: (t, inf, sup) => t >= inf && t <= sup
+}
+M.Ease = {
+    linear: t => t,
+    cb: t => t ** 3 - 3 * t ** 2 + 3 * t,
+    o3: t => (--t) * t * t + 1
+}
+M.XY = {
+    accX: 0, accY: 0, offsetTop: function (el) {
+        this.accY = 0
+        if (el.offsetParent) {
+            this.accY = this.offsetTop(el.offsetParent)
+        }
+        return el.offsetTop + this.accY
+    }, offsetLeft: function (el) {
+        this.accX = 0
+        if (el.offsetParent) {
+            this.accX = this.offsetLeft(el.offsetParent)
+        }
+        return el.offsetLeft + this.accX
+    }
+}
+M.G = {
+    root: r => M.Is.def(r) ? r : document,
+    s: (r, t, el) => {
+        let l = M.G.root(r)["getElement" + t](el)
+        return t === "ById" ? l : Array.from(l)
+    },
+    id: (el, r) => M.G.s(r, "ById", el),
+    class: (el, r) => M.G.s(r, "sByClassName", el),
+    tag: (el, r) => M.G.s(r, "sByTagName", el),
+    attr: el => document.querySelector(el)
+}
+M.Pe = {
+    f: (t, r) => {
+        t.style.pointerEvents = r
+    }, all: t => {
+        M.Pe.f(t, "all")
+    }, none: t => {
+        M.Pe.f(t, "none")
+    }
+}
+M.Index = (el, arr) => {
+    let n = M.L(arr);
+    for (let i = 0; i < n; i++)
+        if (el === arr[i])
+            return i;
+    return -1
+}
+M.Clamp = (t, inf, sup) => Math.max(inf, Math.min(sup, t))
+M.Lerp = (s, e, a) => s * (1 - a) + a * e
+M.Has = (t, r) => t.hasOwnProperty(r)
+M.Rand = (a, b) => Math.random() * (b - a) + a
+M.Fetch = o => {
+    let t = "json" === o.type;
+    const s = t ? "json" : "text"
+        , p = {
+        method: o.method,
+        headers: new Headers({
+            "Content-type": t ? "application/x-www-form-urlencoded" : "text/html"
+        }),
+        mode: "same-origin"
+    }
+    t && (p.body = o.body)
+    fetch(o.url, p)
+        .then(r => {
+            if (r.ok) return r[s]()
+        })
+        .then(r => {
+            o.success(r)
+        })
+}
+M.PD = t => {
+    t.cancelable && t.preventDefault()
+}
+M.Bind = (t, f) => {
+    for (let i = 0; i < M.L(f); i++) {
+        t[f[i]] = t[f[i]].bind(t)
+    }
+}
+M.Select = el => {
+    if (!M.Is.str(el)) return el
+    let s = el.substring(1),
+        c = el.charAt(0) === "#" ? M.G.id(s) : el.charAt(0) === "." ? M.G.class(s) : M.G.tag(el)
+    if (M.Is.null(c)) return
+    c = M.Is.arr(c) ? c : [c]
+    return c[0]
+}
+M.SelectAll = el => {
+    if (!M.Is.str(el))  {
+        if(M.Is.arr(el)) {
+            return el
+        } else {
+            return [el]
+        }
+    }
+    let s = el.substring(1),
+        c = el.charAt(0) === "#" ? M.G.id(s) : el.charAt(0) === "." ? M.G.class(s) : M.G.tag(el)
+    if (M.Is.null(c)) return
+    return M.Is.arr(c) ? c : [c]
+}
+M.Ga = (t, r) => t.getAttribute(r)
+M.T = (t, x, y, u) => {
+    u = M.Is.und(u) ? "%" : u
+    const xyz = "translate3d(" + x + u + "," + y + u + ",0)"
+    let s = t.style
+    s['transform'] = xyz
+    s['mozTransform'] = xyz
+    s['msTransform'] = xyz
+}
+M.O = (t, r) => {
+    t = M.Select(t)
+    t.style.opacity = r
+}
+M.D = (t, r) => {
+    r = r === 'n' ? 'none' : 'flex'
+    let s = M.Select(t).style
+    s['display'] = r
+}
+M.S = (t,p,r) => {
+    let s = M.Select(t).style
+    s[p] = r
+
+}
+M.R = (t, r) => {
+    r = M.Is.und(r) ? 100 : 10 ** r
+    return Math.round(t * r) / r
+}
+M.E = (el, e, cb, o, opt) => {
+    let s = M.SelectAll(el),
+        n = M.L(s)
+    o = o === 'r' ? 'remove' : 'add'
+    for (let i = 0; i < n; i++) {
+        s[i][o + "EventListener"](e, cb, opt)
+    }
+}
+M.L = t => t.length
+M.De = (t, s) => {
+    const cE = new CustomEvent(s)
+    t.dispatchEvent(cE)
+}
+M.Cl = (el, action, css) => {
+    if (M.Is.und(el)) return
+    let s = M.SelectAll(el), n = M.L(s)
+    action = action === 'a' ? 'add' : action === 'r' ? 'remove' : 'toggle'
+    for (let i = 0; i < n; i++) {
+        s[i].classList[action](css)
+    }
+}
+M.Cr = el => document.createElement(el)
+M.Tg = (t,i=false) => i ?t.currentTarget: t.target
+M.Pn = t => t.parentNode
+M.C = t=> t.children
+M.Sp = t => t.stopPropagation()
+M.In = t => location.href.includes(t)
+M.__ = (p, v, t) => {
+    const el = t ? M.Select(t) : document.documentElement
+    el.style.setProperty(p, v)
+}
+M.g__ = (p) => {
+    let root = document.documentElement,
+        v = root.style.getPropertyValue(p)
+    return v.split('px')[0]
+}
+
+
 M.Mo = class {
     constructor(o) {
         M.Bind(this, ['run', 'rRaf', 'uProp'])
-        this.r = new M.Raf(this.run)
+        this.r = new M.RafR(this.run)
         this.o = this.init(o)
     }
 
@@ -24,14 +204,14 @@ M.Mo = class {
             elapsed: 0
         }
         i.el = M.Is.arr(i.el) ? i.el : [i.el]
-        i.elL = M.L(i.el)
+        i.elL = i.el.length
         i.up = M.Has(o, 'update') ? t => o.update(i) : this.uProp
         let p = o.p || !1
         if (p) {
             i.prop = {}
             i.propLi = []
             let k = Object.keys(p)
-            i.propL = M.L(k)
+            i.propL = k.length
             let n = i.propL
             for (; n--;) {
                 const c = k[n]
@@ -104,7 +284,7 @@ M.Mo = class {
                 p.start = p.curr
             }
         }
-        this.o.d.curr = t.d ?? M.R(this.o.d.origin - this.o.d.curr + this.o.elapsed)
+        this.o.d.curr = t.d ? t.d : M.R(this.o.d.origin - this.o.d.curr + this.o.elapsed)
         this.o.e.curve = t.e || this.o.e.curve
         this.o.e.calc = M.Ease[this.o.e.curve]
         this.o.delay = (M.Has(t, 'delay') ? t : this.o).delay
@@ -151,37 +331,141 @@ M.TL = class {
         })
     }
 }
+M.Tab = class {
+
+    constructor() {
+        this.arr = []
+        this.pause = 0
+
+        M.Bind(this, ['v'])
+
+        M.E(document, 'visibilitychange',  this.v,'a')
+    }
+
+    add(o) {
+        this.arr.push(o)
+    }
+
+    v() {
+        const now = performance.now()
+        let elapsed
+        let type
+
+        if (document.hidden) {
+            this.pause = now
+            type = 'stop'
+        } else {
+            elapsed = now - this.pause
+            type = 'start'
+        }
+
+        const l = this.l()
+        for (let i = l; i >= 0; i--) {
+            this.arr[i][type](elapsed)
+        }
+    }
+
+    l() {
+        return this.arr.length - 1
+    }
+
+}
+_M.e.t = new M.Tab
 M.Raf = class {
-    constructor(loop) {
-        M.Bind(this, ['t', 'run', 'stop'])
-        this.loop = loop
-        this.id = this.s = null
+    constructor() {
+        this.arr = []
+        this.pause = 0
+        this.on = true
+
+        M.Bind(this, ['loop', 'tOff', 'tOn'])
+
+        _M.e.t.add({stop: this.tOff, start: this.tOn})
+
+        this.raf()
+    }
+
+    tOff() {
+        this.on = false
+    }
+
+    tOn(e) {
+        const l = this.l()
+        for (let i = l; i >= 0; i--) {
+            this.arr[i].sT += e
+        }
+        this.on = true
+    }
+
+    add(o) {
+        this.arr.push(o)
+    }
+
+    remove(id) {
+        const l = this.l()
+        for (let i = l; i >= 0; i--) {
+            if (this.arr[i].id === id) {
+                this.arr.splice(i, 1)
+                return
+            }
+        }
+    }
+
+    loop(t) {
+        if (this.on) {
+            const l = this.l()
+            for (let i = l; i >= 0; i--) {
+                const arr = this.arr[i]
+                if (!arr.sT) arr.sT = t
+                const elapsed = t - arr.sT
+                arr.cb(elapsed)
+            }
+        }
+
+        this.raf()
+    }
+
+    raf() {
+        requestAnimationFrame(this.loop)
+    }
+
+    l() {
+        return this.arr.length - 1
+    }
+}
+_M.e.r = new M.Raf
+M.RafR = class {
+    static id = 0
+
+    constructor(cb) {
+
+        M.Bind(this, ['run', 'stop'])
+        this.cb = cb
+        this.id = M.RafR.id
         this.on = !1
+        M.RafR.id++
     }
 
     run() {
-        this.on = !0
-        this.s = performance.now()
-        this.id = requestAnimationFrame(this.t)
+        if (!this.on) {
+            _M.e.r.add({id: this.id, cb: this.cb})
+            this.on = 1
+        }
     }
 
     stop() {
-        this.on = !1
-        cancelAnimationFrame(this.id)
+        if (this.on) {
+            _M.e.r.remove(this.id)
+            this.on = false
+        }
     }
 
-    t(t) {
-        if (!this.on) return
-        this.loop(t - this.s)
-        this.id = requestAnimationFrame(this.t)
-    }
 }
 M.Delay = class {
     constructor(d, cb) {
+        M.Bind(this, ["loop"])
         this.d = d
         this.cb = cb
-        M.Bind(this, ["loop"])
-        this.r = new M.Raf(this.loop)
+        this.r = new M.RafR(this.loop)
     }
 
     run() {
@@ -200,134 +484,53 @@ M.Delay = class {
         }
     }
 }
-M.W = class {
-    static get w() {
-        return innerWidth
+M.Scope = class {
+    constructor(el, r, o) {
+        M.Bind(this, ['cb'])
+        this.el = M.Select(el)
+        this.r = r
+        this.o = o
     }
 
-    static get h() {
-        return innerHeight
+    e(a) {
+        M.E(document, 'scroll', this.cb, a)
+        M.E(window, 'load', this.cb, a)
+        M.E(document, 'vLoad', this.cb, a)
     }
-}
-M.Is = {
-    def: t => t !== undefined,
-    und: t => t === undefined,
-    null: t => t === null,
-    str: t => "string" == typeof t,
-    arr: t => t.constructor === Array,
-}
-M.Ease = {
-    linear: t => t,
-    cb: t => t ** 3 - 3 * t ** 2 + 3 * t,
-    o3: t => (--t) * t * t + 1
-}
-M.G = {
-    root: r => M.Is.def(r) ? r : document,
-    s: (r, t, el) => {
-        let l = M.G.root(r)["getElement" + t](el)
-        return t === "ById" ? l : Array.from(l)
-    },
-    id: (el, r) => M.G.s(r, "ById", el),
-    class: (el, r) => M.G.s(r, "sByClassName", el),
-    tag: (el, r) => M.G.s(r, "sByTagName", el),
-    attr: el => document.querySelector(el)
-}
-M.Pe = {
-    f: (t, r) => {
-        t.style.pointerEvents = r
-    }, all: t => {
-        M.Pe.f(t, "all")
-    }, none: t => {
-        M.Pe.f(t, "none")
+
+    observe() {
+        this.e('a')
+
     }
-}
-M.Index = (el, arr) => {
-    let n = M.L(arr);
-    for (let i = 0; i < n; i++)
-        if (el === arr[i])
-            return i;
-    return -1
-}
-M.Clamp = (t, inf, sup) => Math.max(inf, Math.min(sup, t))
-M.Lerp = (s, e, a) => s * (1 - a) + a * e
-M.Has = (t, r) => t.hasOwnProperty(r)
-M.Rand = (a, b) => Math.random() * (b - a) + a
-M.PD = t => {
-    t.cancelable && t.preventDefault()
-}
-M.Bind = (t, f) => {
-    for (let i = 0; i < M.L(f); i++) {
-        t[f[i]] = t[f[i]].bind(t)
+
+    unobserve() {
+        this.e('r')
+
     }
-}
-M.Select = el => {
-    if (!M.Is.str(el)) return el
-    let s = el.substring(1),
-        c = el.charAt(0) === "#" ? M.G.id(s) : el.charAt(0) === "." ? M.G.class(s) : M.G.tag(el)
-    if (M.Is.null(c)) return
-    c = M.Is.arr(c) ? c : [c]
-    return c[0]
-}
-M.SelectAll = el => {
-    if (!M.Is.str(el)) {
-        if (M.Is.arr(el)) {
-            return el
-        } else {
-            return [el]
+
+    visible() {
+        const r = this.r, h = this.el.offsetHeight
+        let t = this.el.getBoundingClientRect().top,
+            b = this.el.getBoundingClientRect().bottom,
+            vH = (innerHeight - t) / h
+
+        return (vH > r) && (b > 0);
+
+    }
+
+
+    cb() {
+        if (this.visible()) {
+            this.o.css && this.cl()
+            this.o.cb && this.o.cb()
+            this.unobserve()
         }
     }
-    let s = el.substring(1),
-        c = el.charAt(0) === "#" ? M.G.id(s) : el.charAt(0) === "." ? M.G.class(s) : M.G.tag(el)
-    if (M.Is.null(c)) return
-    return M.Is.arr(c) ? c : [c]
-}
-M.Ga = (t, r) => t.getAttribute(r)
-M.T = (t, x, y, u) => {
-    u = M.Is.und(u) ? "%" : u
-    const xyz = "translate3d(" + x + u + "," + y + u + ",0)"
-    let s = t.style
-    s['transform'] = xyz
-    s['mozTransform'] = xyz
-    s['msTransform'] = xyz
-}
-M.O = (t, r) => {
-    t = M.Select(t)
-    t.style.opacity = r
-}
-M.D = (t, r) => {
-    r = r === 'n' ? 'none' : 'flex'
-    let s = M.Select(t).style
-    s['display'] = r
-}
-M.S = (t, p, r) => {
-    let s = M.Select(t).style
-    s[p] = r
 
-}
-M.R = (t, r) => {
-    r = M.Is.und(r) ? 100 : 10 ** r
-    return Math.round(t * r) / r
-}
-M.E = (el, e, cb, o, opt) => {
-    let s = M.SelectAll(el),
-        n = M.L(s)
-    o = o === 'r' ? 'remove' : 'add'
-    for (let i = 0; i < n; i++) {
-        s[i][o + "EventListener"](e, cb, opt)
+    cl() {
+        this.o.css && M.Cl(this.el, 'r', this.o.css)
     }
 }
-M.L = t => t.length
-M.Cl = (el, action, css) => {
-    if (M.Is.und(el)) return
-    let s = M.SelectAll(el), n = M.L(s)
-    action = action === 'a' ? 'add' : action === 'r' ? 'remove' : 'toggle'
-    for (let i = 0; i < n; i++) {
-        s[i].classList[action](css)
-    }
-}
-M.Tg = (t, i = false) => i ? t.currentTarget : t.target
-M.Pn = t => t.parentNode
-M.Sp = t => t.stopPropagation()
 
 // Main
 !function () {
@@ -359,7 +562,7 @@ M.Sp = t => t.stopPropagation()
             }
             this.ctx = this.c.getContext('2d')
             this.r = _D.isD ? 150 : 100
-            this.raf = new M.Raf(this.loop)
+            this.raf = M.RafR(this.loop)
             this.i = 1
             this._e()
 
